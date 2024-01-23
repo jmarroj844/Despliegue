@@ -1,5 +1,3 @@
-#!/bin/bash
-
 if ! command -v aws &> /dev/null; then
     echo "AWS CLI no está instalado. Instalando..."
     sudo apt-get update
