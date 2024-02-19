@@ -1,8 +1,8 @@
-name: Deploy to EC2
+name: Deploy
 
 on:
   workflow_run:
-    workflows: ["Java Test"]
+    workflows: ["Test"]
     types:
       - completed
 
@@ -10,17 +10,19 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    needs: test
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
-        aws-region: us-east-1
+      - name: AWS Configure Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: <tu-región-AWS>
 
-    - name: Deploy with Gradle
-      run: ./gradlew deploy
+      - name: Deploy with Gradle
+        run: ./gradlew deploy
